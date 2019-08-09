@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseRecyclerAdapter adapter;
     CoordinatorLayout mnl;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,17 +102,18 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseRecyclerOptions<Hotels> options=
                 new FirebaseRecyclerOptions.Builder<Hotels>()
-                .setQuery(q, new SnapshotParser<Hotels>() {
-                    @NonNull
-                    @Override
-                    public Hotels parseSnapshot(@NonNull DataSnapshot snapshot) {
-                        return new Hotels(snapshot.child("title").getValue().toString(),
-                                snapshot.child("price").getValue().toString(),
-                                snapshot.child("image").getValue().toString(),
-                                snapshot.child("address").getValue().toString());
-                    }
-                }).build();
+                .setQuery(q, Hotels.class)
+                .setLifecycleOwner(this)
+                .build();
         adapter= new FirebaseRecyclerAdapter<Hotels, EventViewHolder>(options) {
+            
+            @Override
+            public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.holder_activity, parent, false);
+                return new EventViewHolder(view);
+            }
+
             @Override
             protected void onBindViewHolder(@NonNull EventViewHolder viewHolder, int i, @NonNull Hotels model) {
                 final String event_key = getRef(i).getKey();
@@ -132,13 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            @NonNull
-            @Override
-            public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.holder_activity, parent, false);
-                return new EventViewHolder(view);
-            }
+            
         };
         //pass the adapter to our event view appearance
         mEventList.setAdapter(adapter);

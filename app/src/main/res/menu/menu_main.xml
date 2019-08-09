@@ -6,18 +6,19 @@
         android:id="@+id/add_event"
         android:orderInCategory="1"
         android:icon="@drawable/ic_add_next"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:title=""/>
     
 
     <item
-        android:id="@+id/logout"
-        android:orderInCategory="100"
-        android:title="Logout"
-        app:showAsAction="never" />
+    android:id="@+id/logout"
+    android:orderInCategory="100"
+    android:title="Logout"
+    app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="settings"
         app:showAsAction="never" />
     
 </menu>
